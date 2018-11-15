@@ -1,7 +1,13 @@
 <?
+
+	
+	$hashtag="#baseball"; 
+	//Store hashtag in variable
+		
 	require_once('include/twitteroauth.php');
 	require_once('include/OAuth.php');
 	require_once('include/TwitterAPIExchange.php');
+	//Importing libraries which are stores in Include folder
 
 		$settings = array(
 		    'oauth_access_token' => '1063029996011155456-CcmPREIoYLqce9FwvpLWkLWAEiWQ4s',
@@ -9,30 +15,37 @@
 		    'consumer_key' => '2Iv3usoHNT60gopvZAwGELKvf',
 		    'consumer_secret' => 'zIy7YOpKaFOfiCJ5NnZex5ziXFe5xKMIJQ7A8iHzOeORwcPH2q'
 				);
+		//Authentication
 
 	$url = 'https://api.twitter.com/1.1/search/tweets.json';
+	//Reference for above url = Twitter API Documentation
 	$requestMethod = 'GET';
-
 	
-	$getfield = '?q=#baseball&result_type=recent&count=100';
+	
+	$getfield = '?q='.$hashtag.'&result_type=recent&count=100';
+	//To make query
 	$twitter = new TwitterAPIExchange($settings);
 	$string2 = json_decode($twitter->setGetfield($getfield)
 	             ->buildOauth($url, $requestMethod)
         	     ->performRequest(),$assoc = TRUE);
+	//Performing request and decoding in JSON 
 
 
 	
 	echo "<br/>";
 	echo "Twitter Handle"."<br/>";
-	$c=1;
+
+	$count=1;// To provide 10 recent twitter_handle & hence to keep count in variable
 	foreach($string2['statuses'] as $items)
 	{
-		if($c>10)
+		if($count>10)
 		{
 		break;
 		}
 		echo "@".$items['user']['screen_name']."<br/>";
-		$c=$c+1;
+		//Screen name is basically Twitter Handle.
+		
+		$count=$count+1;
 		
 	}
 ?>
